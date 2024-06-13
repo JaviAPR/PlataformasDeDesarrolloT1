@@ -4,6 +4,8 @@
  */
 package farmaciat;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author javi_
@@ -13,12 +15,14 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
     /**
      * Creates new form FarmaciaInterfaz
      */
+    
+    
+
     public FarmaciaInterfaz() {
         initComponents();
         distribuidor.add(opD1);
         distribuidor.add(opD2);
         distribuidor.add(opD3);
-        
         sucursal.add(check1);
         sucursal.add(check2);
     }
@@ -35,6 +39,7 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
 
         distribuidor = new javax.swing.ButtonGroup();
         sucursal = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
         nombreMedicamento = new java.awt.TextField();
         tipoMedicamento = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -48,14 +53,33 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         check1 = new javax.swing.JCheckBox();
         check2 = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Farmacia JP");
+        setBackground(new java.awt.Color(204, 204, 204));
 
-        nombreMedicamento.setName("Medicamento"); // NOI18N
+        nombreMedicamento.setName(""); // NOI18N
 
         tipoMedicamento.setEditable(true);
-        tipoMedicamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Analgésico", "Analéptico", "Anestésico", "Antiácido", "Antidepresivo", "Antibióticos" }));
+        tipoMedicamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione:", "Analgésico", "Analéptico", "Anestésico", "Antiácido", "Antidepresivo", "Antibióticos" }));
+        tipoMedicamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tipoMedicamentoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Nombre del Medicamento:");
 
@@ -87,6 +111,24 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
 
         check2.setText("Secundaria");
 
+        jButton1.setBackground(new java.awt.Color(0, 255, 153));
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText("Confirmar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                confirmado(evt);
+            }
+        });
+
+        jButton2.setBackground(new java.awt.Color(255, 51, 51));
+        jButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jButton2.setText("Borrar");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                borrar(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,6 +156,12 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(opD1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(115, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(74, 74, 74)
+                .addComponent(jButton1)
+                .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,7 +194,11 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(check1)
                     .addComponent(check2))
-                .addGap(108, 108, 108))
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -160,6 +212,88 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_check1ActionPerformed
 
+    private void confirmado(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmado
+        // TODO add your handling code here:
+        if(nombreMedicamento.getText().isEmpty()){
+            errorNombreVacio();
+        }else if(comprobarNombre(nombreMedicamento.getText().toString())== false){
+            errorNombre();
+        }else if(tipoMedicamento.getSelectedItem().equals("Seleccione:")){
+            errorTipo();
+        }else if(cantidaMedicamento.getText().isEmpty()){
+            errorNumVacio();
+        }else if((convNumero(cantidaMedicamento.getText()))== false){
+            errorConvertNumero();
+        }else if(esPositivo(Integer.parseInt(cantidaMedicamento.getText()))==false){
+            errorCantidad();
+        }else if(sucursal.getSelection()==null){
+            errorSede();
+        }else if(distribuidor.getSelection()==null){
+            errorDistribuidor();
+        }else{
+            System.out.println(nombreMedicamento.getText());
+            System.out.println(tipoMedicamento.getSelectedItem());
+        }
+        
+    }//GEN-LAST:event_confirmado
+
+    private void borrar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_borrar
+        // TODO add your handling code here:
+        distribuidor.clearSelection();
+        nombreMedicamento.setText("");
+        tipoMedicamento.setSelectedItem("Seleccione:");
+        sucursal.clearSelection();
+        cantidaMedicamento.setText("");
+    }//GEN-LAST:event_borrar
+    
+    private void tipoMedicamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoMedicamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tipoMedicamentoActionPerformed
+    
+    public boolean comprobarNombre(String medicamentoNombre){
+        String regex = "^[a-zA-Z0-9]+$";
+        return medicamentoNombre.matches(regex);
+    }
+    public boolean esPositivo(int cantidad){
+        if(cantidad > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean convNumero(String numero){
+        try {
+            Integer.parseInt(numero);
+            return true;
+            } catch (NumberFormatException e) {
+            return false;
+            }
+    }
+    
+    public void errorNombre(){
+        JOptionPane.showMessageDialog(null, "El nombre no puede tener caracteres especiales.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorNombreVacio(){
+        JOptionPane.showMessageDialog(null, "El nombre no puede estar vacio.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorTipo(){
+        JOptionPane.showMessageDialog(null, "Debe seleccionar un tipo de medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorNumVacio(){
+        JOptionPane.showMessageDialog(null, "La cantidad no puede estar vacia.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorCantidad(){
+        JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorConvertNumero(){
+        JOptionPane.showMessageDialog(null, "La cantidad debe ser numerica.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorDistribuidor(){
+        JOptionPane.showMessageDialog(null, "Debe elegir un distribuidor.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void errorSede(){
+        JOptionPane.showMessageDialog(null, "Debe elegir una sucursal para enviar.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     /**
      * @param args the command line arguments
      */
@@ -200,11 +334,14 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
     private javax.swing.JCheckBox check1;
     private javax.swing.JCheckBox check2;
     public javax.swing.ButtonGroup distribuidor;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private java.awt.TextField nombreMedicamento;
     private javax.swing.JRadioButton opD1;
     private javax.swing.JRadioButton opD2;
