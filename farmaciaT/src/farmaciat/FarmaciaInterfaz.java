@@ -90,11 +90,6 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
         jLabel4.setText("Distribuidor:");
 
         opD1.setText("Cofarma");
-        opD1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                opD1ActionPerformed(evt);
-            }
-        });
 
         opD2.setText("Empsephar");
 
@@ -103,11 +98,6 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
         jLabel5.setText("Sucursal para el pedido:");
 
         check1.setText("Principal");
-        check1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                check1ActionPerformed(evt);
-            }
-        });
 
         check2.setText("Secundaria");
 
@@ -203,15 +193,7 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void opD1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opD1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_opD1ActionPerformed
-
-    private void check1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_check1ActionPerformed
-
+    
     private void confirmado(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmado
         // TODO add your handling code here:
         if(nombreMedicamento.getText().isEmpty()){
@@ -231,8 +213,23 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
         }else if(distribuidor.getSelection()==null){
             errorDistribuidor();
         }else{
-            System.out.println(nombreMedicamento.getText());
-            System.out.println(tipoMedicamento.getSelectedItem());
+            opD1.setActionCommand("Cofarma");
+            opD2.setActionCommand("Empsephar");
+            opD3.setActionCommand("Cemefar");
+            check1.setActionCommand("Principal");
+            check2.setActionCommand("Secundaria");
+            Recibo recibo = new Recibo();
+            recibo.setTitle("Pedido al Distribuidor "+distribuidor.getSelection().getActionCommand());
+            recibo.medicamento.setText(cantidaMedicamento.getText()+" Unidades del "+tipoMedicamento.getSelectedItem().toString()+" "+nombreMedicamento.getText());
+            if(sucursal.getSelection().getActionCommand().equals(check1.getActionCommand())){
+                recibo.sucursal.setText("Para la farmacia situada en la calle de la Rosa n.28 ");
+            }else if(sucursal.getSelection().getActionCommand().equals(check2.getActionCommand())){
+                recibo.sucursal.setText("Para la farmacia situada en la calle Alcazabilla n.3 ");
+            }
+            
+            recibo.setVisible(true);
+            
+            
         }
         
     }//GEN-LAST:event_confirmado
@@ -297,6 +294,7 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -343,9 +341,9 @@ public class FarmaciaInterfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private java.awt.TextField nombreMedicamento;
-    private javax.swing.JRadioButton opD1;
-    private javax.swing.JRadioButton opD2;
-    private javax.swing.JRadioButton opD3;
+    public javax.swing.JRadioButton opD1;
+    public javax.swing.JRadioButton opD2;
+    public javax.swing.JRadioButton opD3;
     private javax.swing.ButtonGroup sucursal;
     private javax.swing.JComboBox<String> tipoMedicamento;
     // End of variables declaration//GEN-END:variables
